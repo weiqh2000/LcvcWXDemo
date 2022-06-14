@@ -1,6 +1,6 @@
 <template>
 	<view>
-		主页
+		<video src="https://weiqh.net/video/ticao.mp4"></video>
 	</view>
 </template>
 

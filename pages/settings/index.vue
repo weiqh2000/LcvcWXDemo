@@ -1,6 +1,6 @@
 <template>
 	<view>
-		主页
+		设置页
 	</view>
 </template>
 
