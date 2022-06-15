@@ -1,19 +1,22 @@
 <template>
 	<view>
-        <u-popup :show="popoutShow" mode="bottom" :round="10" @close="closeLogin" zIndex="999998">
+        <u-popup :show="popoutShow" mode="bottom" :round="10">
             <view class="f__login">
-<!--                <view class="loginLoading" v-if="isLoading">
-                    <u-loadmore status="loading" loadingText="正在登录..."></u-loadmore>
-                </view> -->
                 <view class="logo">
                     <image class="img" src="/static/logo.png"></image>
                 </view>
                 <view class="title">欢迎登录~</view>
-                <view class="loginButton"><button class="button marginT" @click="onAuthorization" :style="{background:PrimaryColor}">微信授权登录</button>
-                    <button class="button" @click="closeLogin" style="background:#fff;margin-top:24rpx;" :style="{border:'2rpx solid '+PrimaryColor,color:PrimaryColor}">
-                        暂不登录
-                    </button>
-                </view>
+				<view>行走的思政课</view>
+                <view class="loginButton">
+					<button class="button marginT" @click="onAuthorization" :style="{background:PrimaryColor}">微信授权登录</button>
+					<!-- #ifdef MP-WEIXIN -->
+					<navigator target="miniProgram" open-type="exit">
+						<button class="button" style="background:#fff;margin-top:24rpx;" :style="{border:'2rpx solid '+PrimaryColor,color:PrimaryColor}">
+						    暂不使用
+						</button>
+					</navigator>
+					<!-- #endif -->
+				</view>
             </view>
         </u-popup>
 	</view>
@@ -24,52 +27,62 @@ export default {
 	data() {
 		return {
             PrimaryColor: '#1fba1a', //主题色
-            readonly: false,
-            codeText: '获取验证码',
-            phone: '', //号码
-            vCode: '', //验证码
-            code: '',  //uni.login获取的code
 			popoutShow: true,
+			jsCode: ""
 		};
 	},
 	methods: {
         //个人信息授权登录
         onAuthorization(e) {
-            getUserInfo(info=>{
-                console.log(info,'授权信息')
-                let httpData = {
-                    code: this.code,
-                    nickName: info.nickName || '', //昵称
-                    avatarUrl: info.avatarUrl || '', //头像
-                    gender: info.gender || '', //性别 0:未知 1:男 2:女
-                }
-                // uni.$u.http.post('您的接口', httpData).then(res => {
-                    let userInfo = {
-                        // ...res,
-                        token:true,//token用于判断是否登录
-                    }
-                    // this.setUserInfo(userInfo)
-                    // setTimeout(()=>{
-                    //     uni.showToast({
-                    //     	title: '登录成功',
-                    //     	icon: 'none'
-                    //     });
-                    //     this.closeLogin();
-                    // },100)
-                // })
-            },err=>{
-                // this.closeLogin();
-            })
-        },
-        onAuthError(e){
-            uni.showToast({
-            	title: '您已拒绝授权~',
-            	icon: 'none'
-            });
+			// #ifdef MP-WEIXIN
+				uni.showLoading({
+					title: '正在登录...'
+				});
+				wx.login({
+				        success: (res) => { 
+				            if (res.code) { 
+				                this.jsCode=res.code
+								 console.log(res.code)
+				                uni.request({
+				                    url: 'https://wxapi.weiqh.net/api/wx/decrypt',
+				                    method:'POST',  
+				                    data: {
+				                        code: res.code 
+				                    },
+				                    success: (cts) => {
+										uni.setStorageSync('openid', cts.data.code.openid)
+										uni.setStorageSync('session_key', cts.data.code.session_key)
+				                    }
+				                });
+				            } else {
+				                console.log('登录失败！' + res.errMsg)  
+				            }
+				        }
+				})
+				uni.hideLoading();
+				uni.showLoading({
+					title: '正在获取用户信息...'
+				});
+				wx.getUserProfile({
+					  // desc: '业务需要',
+					  desc: '获取用户信息，初始化', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+					  success: res => {
+					   console.log(res);
+					   uni.setStorageSync('nickName', res.userInfo.nickName)
+					   uni.setStorageSync('src', res.userInfo.avatarUrl)
+					   this.closeLogin()
+					  }
+				})
+				uni.hideLoading();
+			// #endif
+			// #ifdef H5
+				this.closeLogin()
+			// #endif
         },
 		closeLogin(){
             console.log('closeLogin')
-            this.popoutShow = false
+            this.popoutShow = false;
+			wx.showTabBar()
 		},
 	}
 };
@@ -198,5 +211,23 @@ export default {
         width: 100%;
         border: none;
     }
+	.nav{
+		-webkit-tap-highlight-color: transparent;
+		    background-color: #f8f8f8;
+		    border-radius: 5px;
+		    box-sizing: border-box;
+		    cursor: pointer;
+		    display: block;
+		    font-size: 18px;
+		    line-height: 2.55555556;
+		    margin-left: auto;
+		    margin-right: auto;
+		    overflow: hidden;
+		    padding-left: 14px;
+		    padding-right: 14px;
+		    position: relative;
+		    text-align: center;
+		    text-decoration: none;
+	}
 }
 </style>

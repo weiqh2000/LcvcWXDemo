@@ -19,24 +19,26 @@
 			}
 		},
 		onLoad() {
-			
+			// #ifdef MP-WEIXIN
+				wx.hideTabBar()
+			// #endif
 		},
 		methods: {
-			getUserInfo(res) {
-						this.userdetail = res.detail; //将用户信息存起来，下次使用
-						this.login();
-					},
-					login() {
-						uni.login({
-						provider: 'weixin',
-							success: res => {
-							 console.log(res)
-							},
-							fail: err => {
-							console.log('err', err);
-							}
-						});
-					},
+			// getUserInfo(res) {
+			// 			this.userdetail = res.detail; //将用户信息存起来，下次使用
+			// 			this.login();
+			// 		},
+			// 		login() {
+			// 			uni.login({
+			// 			provider: 'weixin',
+			// 				success: res => {
+			// 				 console.log(res)
+			// 				},
+			// 				fail: err => {
+			// 				console.log('err', err);
+			// 				}
+			// 			});
+			// 		},
 		}
 	}
 </script>
