@@ -1,6 +1,13 @@
 <template>
 	<view>
-		<video src="https://weiqh.net/video/ticao.mp4"></video>
+		<view>
+			<view @click="scan()">
+				扫码测试
+			</view>
+			<view @click="toPage()">
+				跳转测试
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -8,14 +15,30 @@
 	export default {
 		data() {
 			return {
-				
+				url: ""
 			}
 		},
 		onLoad() {
 
 		},
 		methods: {
-
+			scan(){
+				var _this = this;
+				uni.scanCode({
+					success: function (res) {
+						_this.url = res.result
+					},
+					complete: function (){
+						_this.toPage()
+					}
+				})
+			},
+			toPage(){
+				let item = encodeURIComponent(this.url);
+				uni.navigateTo({
+					url: '/pages/scan/result/index?data=' + item
+				})
+			}
 		}
 	}
 </script>

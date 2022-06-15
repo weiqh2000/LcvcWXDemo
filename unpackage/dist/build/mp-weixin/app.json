@@ -1,0 +1,42 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/scan/index",
+    "pages/settings/index",
+    "pages/scan/result/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "首页",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#FFFFFF",
+    "selectedColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8",
+    "fontSize": "20px",
+    "iconWidth": "30px",
+    "position": "bottom",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/home.png",
+        "selectedIconPath": "static/homeShow.png"
+      },
+      {
+        "pagePath": "pages/scan/index",
+        "iconPath": "static/scan.png",
+        "selectedIconPath": "static/scanShow.png"
+      },
+      {
+        "pagePath": "pages/settings/index",
+        "iconPath": "static/me.png",
+        "selectedIconPath": "static/meShow.png"
+      }
+    ]
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
+}

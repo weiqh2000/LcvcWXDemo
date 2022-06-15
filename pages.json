@@ -17,6 +17,12 @@
 			"style": {
 				"navigationBarTitleText": "个人中心"
 			}
+		},
+		{
+			"path": "pages/scan/result/index",
+			"style": {
+				"navigationBarTitleText": "扫码结果"
+			}
 		}
 	],
 	"globalStyle": {
@@ -40,7 +46,7 @@
 			{
 				"pagePath": "pages/scan/index",
 				"iconPath": "static/scan.png",
-				"selectedIconPath": "static/scan.png"
+				"selectedIconPath": "static/scanShow.png"
 			},
 			{
 				"pagePath": "pages/settings/index",

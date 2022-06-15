@@ -1,0 +1,1 @@
+<view>主页<button open-type="getPhoneNumber" data-event-opts="{{[['getphonenumber',[['onGetPhoneNumber',['$event']]]]]}}" bindgetphonenumber="__e">唤起授权</button><button open-type="getUserInfo" withCredentials="true" lang="zh_CN" data-event-opts="{{[['getuserinfo',[['getUserInfo',['$event']]]]]}}" bindgetuserinfo="__e">授权登录</button></view>
