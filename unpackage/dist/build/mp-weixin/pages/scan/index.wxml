@@ -1,1 +1,1 @@
-<view><view><view data-event-opts="{{[['tap',[['scan']]]]}}" bindtap="__e">扫码测试</view><view data-event-opts="{{[['tap',[['toPage']]]]}}" bindtap="__e">跳转测试</view></view></view>
+<view><view class="main"></view></view>

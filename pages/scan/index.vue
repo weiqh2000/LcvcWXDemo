@@ -1,12 +1,7 @@
 <template>
-	<view>
-		<view>
-			<view @click="scan()">
-				扫码测试
-			</view>
-			<view @click="toPage()">
-				跳转测试
-			</view>
+	<view >
+		<view class="main">
+			<!-- <image src="https://weiqh.net/img/Monument.jpg"></image> -->
 		</view>
 	</view>
 </template>
@@ -15,27 +10,35 @@
 	export default {
 		data() {
 			return {
-				url: ""
+				scanURL: ""
 			}
 		},
-		onLoad() {
-
+		onTabItemTap() {
+			// #ifdef MP-WEIXIN
+			this.scan()
+			// #endif
 		},
 		methods: {
 			scan(){
 				var _this = this;
 				uni.scanCode({
 					success: function (res) {
-						_this.url = res.result
+						_this.scanURL = res.result;
+						_this.toPage()
+					},
+					fail: (e) => {
+						uni.redirectTo({
+							url: '/pages/index/index'
+						})
 					},
 					complete: function (){
-						_this.toPage()
+						
 					}
 				})
 			},
 			toPage(){
-				let item = encodeURIComponent(this.url);
-				uni.navigateTo({
+				let item = encodeURIComponent(this.scanURL);
+				uni.redirectTo({
 					url: '/pages/scan/result/index?data=' + item
 				})
 			}
@@ -44,4 +47,11 @@
 </script>
 
 <style>
+	page{
+		background-image: url("https://weiqh.net/img/Monument.jpg");
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-color: #CCCCCC;
+	}
 </style>

@@ -1,1 +1,1 @@
-<view>设置页</view>
+<view><view class="details"><image class="ite_mimg" src="/static/image/Avatar@2x.png" mode="aspectFit"></image><view class="names _h4">李立三</view><text class="major">经管系  20级会计</text></view><block wx:for="{{data}}" wx:for-item="item" wx:for-index="index" wx:key="index"><view class="record"><image class="icon_mimg" src="{{item.url}}" mode="aspectFit"></image><text class="major">{{item.name}}</text></view></block></view>

@@ -74,6 +74,38 @@ export default {
 					  }
 				})
 				uni.hideLoading();
+				
+				
+				    wx.getSetting({
+				      success(res){
+				        // console.log(res)
+				        if(!res.authSetting['scope.werun']){
+				// 如果用户还未授权过，需要用户授权读取微信运动数据
+				          wx.authorize({
+				            scope: 'scope.werun',
+				            success() {
+				              //读取微信步数数据
+				              // that.getWeRunData()
+							  console.log("=====================")
+				            },
+				            fail() {
+				              //如果用户拒绝授权，提示用户需要同意授权才能获取他的微信运动数据
+				              wx.showModal({
+				                title: '读取微信运动数据失败',
+				                content: '请在小程序设置界面（「右上角」 - 「关于」 - 「右上角」 - 「设置」）中允许我们访问微信运动数据',
+				              })
+				            }
+				          })
+				
+				        }else{
+				           //如果用户已授权过，直接开始同步微信运动数据
+				          //读取微信步数数据
+				          // that.getWeRunData()
+						   console.log("------------------------------")
+				        }
+				      }
+				    })
+				
 			// #endif
 			// #ifdef H5
 				this.closeLogin()
