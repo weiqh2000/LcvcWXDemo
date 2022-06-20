@@ -24,12 +24,27 @@
 				uni.scanCode({
 					success: function (res) {
 						_this.scanURL = res.result;
-						_this.toPage()
+						console.log(res.result.substring(8,17))
+						if(res.result.substring(8,17)=="weiqh.net"){
+							_this.toPage()
+						}else{
+							uni.switchTab({
+								url: '/pages/index/index'
+							})
+							uni.showModal({
+								content: '请扫描正确二维码',
+								confirmText: '确定'
+							});
+						}
 					},
 					fail: (e) => {
-						uni.redirectTo({
+						uni.switchTab({
 							url: '/pages/index/index'
 						})
+						uni.showModal({
+							content: '请扫描正确二维码',
+							confirmText: '确定'
+						});
 					},
 					complete: function (){
 						

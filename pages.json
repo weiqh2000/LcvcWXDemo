@@ -9,7 +9,7 @@
 		{
 			"path": "pages/scan/index",
 			"style": {
-				"navigationBarTitleText": "扫码"
+				"navigationBarTitleText": "扫码学习"
 			}
 		},
 		{
@@ -22,6 +22,12 @@
 			"path": "pages/scan/result/index",
 			"style": {
 				"navigationBarTitleText": "我的思政课"
+			}
+		},
+		{
+			"path": "pages/settings/info/index",
+			"style": {
+				"navigationBarTitleText": "完善用户信息"
 			}
 		}
 	],

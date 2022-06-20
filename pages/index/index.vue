@@ -27,16 +27,22 @@
 						<h4>目前总排名</h4>
 					</view>
 					<view class="times">
-						<text>2022-09-09 12:12</text>
+						<text>{{timeShow}}</text>
 					</view>
 				</view>
 				<view class="ranking_personal" v-for="(item,index) in data" :key="index">
 					<view class="left">
-						<image class="portrait" src="/static/image/Placeholder@2x.png" ></image>
-						<text style="margin-left: 10rpx;">{{item.name}}</text>
+						<image class="portrait" :src="item.src" ></image>
+						<text style="margin-left: 10rpx;">{{item.nickName}}</text>
 					</view>
-					<view class="right">
+					<view v-if="index==0" class="right">
 						<text>第一名</text>
+					</view>
+					<view v-if="index==1" class="right">
+						<text>第二名</text>
+					</view>
+					<view v-if="index==2" class="right">
+						<text>第三名</text>
 					</view>
 				</view>
 		</view>
@@ -67,12 +73,10 @@
 						<image class="ite_mimg" src="/static/image/ImageCopy2@2x.png" mode="aspectFit"></image>
 					</view>
 				</view>
-				
 			</view>
-		
-		<!-- <button open-type="getPhoneNumber" @getphonenumber="onGetPhoneNumber">唤起授权</button> -->
-		<!-- <button open-type="getUserInfo" withCredentials="true" lang="zh_CN" @getuserinfo="getUserInfo">授权登录</button> -->
-		<f-login></f-login>
+		<view v-if="tanchaung">
+			<f-login></f-login>
+		</view>
 	</view>
 </template>
 
@@ -84,35 +88,77 @@
 		},
 		data() {
 			return {
+				timeShow: "",
+				tanchaung: false,
 				userdetail: {},
 				data:[
-					{name:'Title'},
-					{name:'Title'},
-					{name:'Title'},
+					
 				]
 			}
 		},
 		onLoad() {
-			// #ifdef MP-WEIXIN
-				wx.hideTabBar()
-			// #endif
+			this.dateDefault()
+			this.show()
+		},
+		created() {
+			this.getTop()
 		},
 		methods: {
-			// getUserInfo(res) {
-			// 			this.userdetail = res.detail; //将用户信息存起来，下次使用
-			// 			this.login();
-			// 		},
-			// 		login() {
-			// 			uni.login({
-			// 			provider: 'weixin',
-			// 				success: res => {
-			// 				 console.log(res)
-			// 				},
-			// 				fail: err => {
-			// 				console.log('err', err);
-			// 				}
-			// 			});
-			// 		},
+			dateDefault() {
+				let yy = new Date().getFullYear();
+				let mm = new Date().getMonth() + 1;
+				let dd = new Date().getDate();
+				let hh = new Date().getHours();
+				let mf =
+				new Date().getMinutes() < 10
+				  ? "0" + new Date().getMinutes()
+				  : new Date().getMinutes();
+				let ss =
+				new Date().getSeconds() < 10
+				  ? "0" + new Date().getSeconds()
+				  : new Date().getSeconds();
+				this.timeShow = yy + "-" + mm + "-" + dd + " " + hh + ":" + mf;
+
+			},
+			show(){
+				// #ifdef MP-WEIXIN
+				var that = this
+				wx.checkSession({
+				  success () {
+					  wx.getWeRunData({
+					    success (res) {
+					      // 拿 encryptedData 到开发者后台解密开放数据
+					      // const encryptedData = res.encryptedData
+					      // 或拿 cloudID 通过云调用直接获取开放数据
+					      // const cloudID = res.cloudID
+					  	console.log(res)
+					    }
+					  })
+					  
+				  },
+				  fail () {
+					  wx.hideTabBar()
+					  that.tanchaung=true
+				  }
+				})
+				if(uni.getStorageSync('nickName')==null||uni.getStorageSync('nickName')==""){
+					wx.hideTabBar()
+					that.tanchaung=true
+				}
+				// #endif
+			},
+			getTop(){
+				uni.request({
+					url: 'https://wxapi.weiqh.net/api/wx/alltop',
+					method:'GET',
+					success: (res) => {
+						for(var i=0;i<=2;i++){
+							this.data.push(res.data.data[i])
+						}
+						console.log(res.data.data)
+					}
+				})
+			}
 		}
 	}
 </script>

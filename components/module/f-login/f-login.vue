@@ -6,7 +6,7 @@
                     <image class="img" src="/static/logo.png"></image>
                 </view>
                 <view class="title">欢迎登录~</view>
-				<view>行走的思政课</view>
+				<view class="titlebody">行走的思政课</view>
                 <view class="loginButton">
 					<button class="button marginT" @click="onAuthorization" :style="{background:PrimaryColor}">微信授权登录</button>
 					<!-- #ifdef MP-WEIXIN -->
@@ -28,20 +28,22 @@ export default {
 		return {
             PrimaryColor: '#1fba1a', //主题色
 			popoutShow: true,
-			jsCode: ""
+			jsCode: "",
+			nickName: ""
 		};
 	},
 	methods: {
         //个人信息授权登录
         onAuthorization(e) {
 			// #ifdef MP-WEIXIN
+			var that = this
 				uni.showLoading({
 					title: '正在登录...'
 				});
 				wx.login({
 				        success: (res) => { 
 				            if (res.code) { 
-				                this.jsCode=res.code
+				                that.jsCode=res.code
 								 console.log(res.code)
 				                uni.request({
 				                    url: 'https://wxapi.weiqh.net/api/wx/decrypt',
@@ -64,18 +66,28 @@ export default {
 					title: '正在获取用户信息...'
 				});
 				wx.getUserProfile({
-					  // desc: '业务需要',
-					  desc: '获取用户信息，初始化', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+					  desc: '获取用户信息，初始化',
 					  success: res => {
 					   console.log(res);
 					   uni.setStorageSync('nickName', res.userInfo.nickName)
 					   uni.setStorageSync('src', res.userInfo.avatarUrl)
-					   this.closeLogin()
+					   that.nickName = res.userInfo.nickName;
+					   
+					   uni.request({
+					   	url: 'https://wxapi.weiqh.net/api/wx/login?nickName=' + res.userInfo.nickName +"&src="+res.userInfo.avatarUrl,
+					   	method:'GET',
+					   	success: (res) => {
+					   		console.log(res.data)
+							console.log(res.data.data.sumBu)
+							uni.setStorageSync('sumBu', res.data.data.sumBu)
+							uni.setStorageSync('code', res.data.code)
+							uni.setStorageSync('inClass', res.data.data.inClass)
+							uni.setStorageSync('specialized', res.data.data.specialized)
+					   	}
+					   })
 					  }
 				})
 				uni.hideLoading();
-				
-				
 				    wx.getSetting({
 				      success(res){
 				        // console.log(res)
@@ -86,7 +98,9 @@ export default {
 				            success() {
 				              //读取微信步数数据
 				              // that.getWeRunData()
-							  console.log("=====================")
+							  console.log("====--------------------------==")
+							  that.getRun()
+							  that.closeLogin()
 				            },
 				            fail() {
 				              //如果用户拒绝授权，提示用户需要同意授权才能获取他的微信运动数据
@@ -102,6 +116,8 @@ export default {
 				          //读取微信步数数据
 				          // that.getWeRunData()
 						   console.log("------------------------------")
+						   that.getRun()
+						   that.closeLogin()
 				        }
 				      }
 				    })
@@ -111,6 +127,17 @@ export default {
 				this.closeLogin()
 			// #endif
         },
+		getRun(){
+			wx.getWeRunData({
+			  success (res) {
+			    // 拿 encryptedData 到开发者后台解密开放数据
+			    // const encryptedData = res.encryptedData
+			    // 或拿 cloudID 通过云调用直接获取开放数据
+			    // const cloudID = res.cloudID
+				console.log(res)
+			  }
+			})
+		},
 		closeLogin(){
             console.log('closeLogin')
             this.popoutShow = false;
@@ -142,8 +169,8 @@ export default {
         align-items: center;
     }
     .logo {
-        width: 50%;
-        height: 90rpx;
+        width: 60%;
+        height: 120rpx;
         border-radius: 18rpx;
         overflow: hidden;
         .img {
@@ -152,6 +179,7 @@ export default {
         }
     }
     .title {
+		font-family:"Times New Roman",Times,serif;
         font-size: 40rpx;
         font-weight: bold;
         margin-top: 24rpx;
@@ -261,5 +289,12 @@ export default {
 		    text-align: center;
 		    text-decoration: none;
 	}
+}
+.titlebody{
+	font-family:"Times New Roman",Times,serif;
+	font-size: 50rpx;
+	font-weight: bold;
+	margin-top: 24rpx;
+	color: #2967ff;
 }
 </style>

@@ -1,0 +1,1 @@
+.info_body{margin:auto;width:90%;height:90vh}.info_img{margin:auto;width:80%;height:100rpx}.info_img image{margin:30rpx 0rpx;width:100%;height:100%}.my_font{width:55%;margin:100rpx auto 50rpx;color:#2967ff;font-weight:700;font-size:60rpx}.info_input{border-radius:8px;height:80%;height:80rpx;padding:0rpx 0rpx 0rpx 30rpx;background-color:#f6f6f6;margin:30rpx}
