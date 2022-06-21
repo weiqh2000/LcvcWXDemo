@@ -16,7 +16,7 @@
 			<view  class="record">
 				<image class="icon_mimg" src="/static/image/paiming-22@2x.png" mode="aspectFit"></image>
 				<text class="major">排名记录</text>
-				<text class="res">{{top}}名</text>
+				<text class="res">第{{top}}名</text>
 			</view>
 			<view  class="record">
 				<image class="icon_mimg" src="/static/image/bushu222@2x.png" mode="aspectFit"></image>

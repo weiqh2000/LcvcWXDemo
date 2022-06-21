@@ -12,7 +12,8 @@
 			return {
 				scanURL: "",
 				nickName: "",
-				code: ""
+				code: "",
+				data: {},
 			}
 		},
 		onTabItemTap() {
@@ -89,7 +90,7 @@
 											confirmText: '确定'
 										});
 									}else{
-										_this.toPage()
+										_this.toPage(param)
 									}
 								}
 							})
@@ -135,8 +136,10 @@
 					}
 				})
 			},
-			toPage(){
-				let item = encodeURIComponent(this.scanURL);
+			toPage(param){
+				this.data.data = this.scanURL;
+				this.data.type = param;
+				let item = encodeURIComponent(JSON.stringify(this.data));
 				uni.redirectTo({
 					url: '/pages/scan/result/index?data=' + item
 				})

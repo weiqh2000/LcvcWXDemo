@@ -10,11 +10,33 @@
 	export default {
 		data() {
 			return {
-				url: ""
+				url: "",
+				data1: "",
+				data2: "",
+				number: ""
 			}
 		},
 		onLoad(e) {
-			this.url = decodeURIComponent(e.data)
+			// #ifdef MP-WEIXIN
+			let data = JSON.parse(decodeURIComponent(e.data))
+			this.url = data.data
+			this.number = data.type
+			// #endif
+			this.data1 = new Date().getTime()
+		},
+		mounted(){
+			
+		},
+		onUnload(){
+			this.data2 = new Date().getTime()
+			let time = this.data2 - this.data1
+			uni.request({
+				url: 'https://wxapi.weiqh.net/api/wx/useTime?number='+this.type+'&time='+time,
+				method: "GET",
+				success(res) {
+					
+				}
+			})
 		},
 		methods: {
 			
