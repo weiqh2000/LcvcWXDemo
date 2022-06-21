@@ -16,7 +16,7 @@
 			<view  class="record">
 				<image class="icon_mimg" src="/static/image/paiming-22@2x.png" mode="aspectFit"></image>
 				<text class="major">排名记录</text>
-				<text class="res">第三名</text>
+				<text class="res">{{top}}名</text>
 			</view>
 			<view  class="record">
 				<image class="icon_mimg" src="/static/image/bushu222@2x.png" mode="aspectFit"></image>
@@ -48,16 +48,29 @@
 				src: "",
 				sumBu: "",
 				inClass: "",
-				specialized: ""
+				specialized: "",
+				top: ""
 			}
 		},
 		onTabItemTap() {
 			this.getInfo()
+			this.getTop()
 		},
 		mounted() {
 			
 		},
 		methods: {
+			getTop(){
+				uni.request({
+					url: 'https://wxapi.weiqh.net/api/wx/getMyTop?nickName=' + this.nickName,
+					method: 'GET',
+					success: (res) => {
+						console.log('Top')
+						console.log(res.data)
+						this.top = res.data
+					}
+				})
+			},
 			getInfo(){
 				this.nickName = uni.getStorageSync('nickName')
 				this.src = uni.getStorageSync("src")

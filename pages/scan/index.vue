@@ -17,8 +17,12 @@
 		},
 		onTabItemTap() {
 			// #ifdef MP-WEIXIN
+			uni.showLoading({
+				title: '正在处理...'
+			});
 			this.nickName = uni.getStorageSync('nickName')
 			this.scan()
+			uni.hideLoading()
 			// #endif
 		},
 		methods: {
@@ -55,9 +59,10 @@
 									}
 								}
 							})
-							
 						}else if(res.result=="结束"){
-							
+							uni.redirectTo({
+								url: '/pages/finish/index'
+							})
 						}else if(res.result.substring(8,17)=="weiqh.net"){
 							let param = res.result.split("/")[4].split(".")[0]
 							uni.request({
@@ -67,12 +72,20 @@
 									console.log("扫码")
 									console.log(res.data)
 									_this.code = res.data.code
-									if(_this.code==0||_this.code==1){
+									if(_this.code==0||_this.code=="0"){
 										uni.switchTab({
 											url: '/pages/index/index'
 										})
 										uni.showModal({
 											content: '重复扫码，请选择其他课程',
+											confirmText: '确定'
+										});
+									}else if(_this.code==4||_this.code=="4"){
+										uni.switchTab({
+											url: '/pages/index/index'
+										})
+										uni.showModal({
+											content: '请扫开始码以开始',
 											confirmText: '确定'
 										});
 									}else{

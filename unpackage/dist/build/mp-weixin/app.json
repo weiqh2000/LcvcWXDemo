@@ -4,7 +4,8 @@
     "pages/scan/index",
     "pages/settings/index",
     "pages/scan/result/index",
-    "pages/settings/info/index"
+    "pages/settings/info/index",
+    "pages/finish/index"
   ],
   "subPackages": [],
   "window": {
@@ -38,5 +39,6 @@
       }
     ]
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }

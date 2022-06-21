@@ -29,6 +29,12 @@
 			"style": {
 				"navigationBarTitleText": "完善用户信息"
 			}
+		},
+		{
+			"path": "pages/finish/index",
+			"style": {
+				"navigationBarTitleText": "完成"
+			}
 		}
 	],
 	"globalStyle": {
